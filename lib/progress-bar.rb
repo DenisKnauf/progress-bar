@@ -70,9 +70,11 @@ class ProgressBar::Console < ProgressBar::Base
 	end
 
 	def change_text
-		l = (100.0*i/max).to_i
+		l = [[100.0*i/max, 0].max, 100].min.to_i
 		dd, td = done_dur, total_dur
-		STDOUT.printf "\r\e[J%s / %s [%s>%s] %s", format_time(dd), format_time(td), '='*l, ' '*[100, 100-l].min, text
+		b = ?= * l
+		b[-1] = ?>  unless 0 == l or 100 == l
+		STDOUT.printf "\r\e[J%s / %s [%-*s] %s", format_time(dd), format_time(td), 100, b, text
 	end
 	alias change_progress change_text
 
