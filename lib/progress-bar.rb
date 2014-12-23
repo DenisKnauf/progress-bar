@@ -82,6 +82,10 @@ class ProgressBar::Console < ProgressBar::Base
 		STDERR.printf "\r\e[J%s\n", error
 		change_text
 	end
+
+	def finish
+		STDERR.puts
+	end
 end
 
 class ProgressBar::KDialog < ProgressBar::Base
