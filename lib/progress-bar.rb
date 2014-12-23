@@ -1,6 +1,18 @@
 require 'dbus'
 
-class Progress
+module ProgressBar
+	def self.new *a
+		if STDERR.tty?
+			Console.new *a
+		elsif 'KDE' == ENV['XDG_CURRENT_DESKTOP']
+			KDialog.new *a
+		else
+			KDialog.new *a
+		end
+	end
+end
+
+class ProgressBar::Base
 	attr_reader :max, :i, :text, :error
 	attr_accessor :start
 	def initialize max = nil, text = nil
@@ -38,7 +50,7 @@ class Progress
 	def finish()  end
 end
 
-class ConsoleProgress < Progress
+class ProgressBar::Console < ProgressBar::Base
 	def initialize *a
 		super *a
 		change_text
@@ -65,7 +77,7 @@ class ConsoleProgress < Progress
 	end
 end
 
-class KDialogProgress < Progress
+class ProgressBar::KDialog < ProgressBar::Base
 	attr_reader :dialog_service_path, :dialog_object_path, :errors, :dialog_object
 	def initialize *a
 		super *a
