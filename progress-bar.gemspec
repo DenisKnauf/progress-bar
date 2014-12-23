@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Denis Knauf"]
   s.date = "2014-12-23"
-  s.description = "TODO: longer description of your gem"
+  s.description = "Displays a Progress Bar in terminal or via kdialog"
   s.email = "\#{\"de\"}nis@denkn.at"
   s.extra_rdoc_files = [
     "LICENSE.txt",
