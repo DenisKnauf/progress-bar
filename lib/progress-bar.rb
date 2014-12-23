@@ -33,7 +33,7 @@ class ProgressBar::Base
 	alias to_i i
 	alias inc! increment!
 	def done_rel() 100.0*i/max end
-	def done_dur() (Time.now-@start).seconds end
+	def done_dur() Time.now-@start end
 
 	def total_dur
 		done_dur * max / i
@@ -63,7 +63,7 @@ class ProgressBar::Console < ProgressBar::Base
 
 	def format_time t
 		if t.finite?
-			sprintf "%02d:%02d:%02d", t/1.hour, t/1.minute % 1.hour, t % 1.minute
+			sprintf "%02d:%02d:%02d", t/3600, t/60 % 3600, t % 60
 		else
 			"--:--:--"
 		end
