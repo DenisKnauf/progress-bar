@@ -24,6 +24,11 @@ class ProgressBar::Base
 		change_progress
 	end
 
+	def max= val
+		@max = val
+		change_progress
+	end
+
 	def increment!( x = nil) self.i += (x || 1) end
 	alias to_i i
 	alias inc! increment!
@@ -79,8 +84,8 @@ end
 
 class ProgressBar::KDialog < ProgressBar::Base
 	attr_reader :dialog_service_path, :dialog_object_path, :errors, :dialog_object
-	def initialize *a
-		super *a
+	def initialize max, text
+		super max, text
 		@errors = []
 		args = %w[kdialog --progressbar] + [text, max.to_s]
 		@dialog_service_path, @dialog_object_path = IO.popen( args, 'r', &:readlines).join("\n").split ' '
@@ -122,5 +127,13 @@ class ProgressBar::KDialog < ProgressBar::Base
 	def finish()
 		@dialog_object.close rescue DBus::Error
 		kdialog '--detailederror', "Some errors occured:", errors.join( "<br/>\n")  unless errors.empty?
+	end
+
+	def max= val
+		@dialog_object.Set '', 'maximum', val
+	end
+
+	def max
+		@dialog_object.Get '', 'maximum'
 	end
 end
