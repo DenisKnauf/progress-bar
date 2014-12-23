@@ -90,16 +90,19 @@ end
 
 class ProgressBar::KDialog < ProgressBar::Base
 	attr_reader :dialog_service_path, :dialog_object_path, :errors, :dialog_object
-	def initialize max, text
+	def initialize max, text = nil
 		super max, text
+		text = @text
+		text = nil  if text.nil? or text.empty?
 		@errors = []
-		args = %w[kdialog --progressbar] + [text, max.to_s]
+		args = %w[kdialog --progressbar] + [text || '.', max.to_s]
 		@dialog_service_path, @dialog_object_path = IO.popen( args, 'r', &:readlines).join("\n").split ' '
 		@dialog_bus = DBus.session_bus
 		@dialog_service = @dialog_bus[@dialog_service_path]
 		@dialog_object = @dialog_service.object @dialog_object_path
 		@dialog_object.introspect
 		@dialog_object.showCancelButton true
+		change_text  if text.nil?
 		change_progress
 	rescue DBus::Error
 		raise Interrupt  if $!.name == 'org.freedesktop.DBus.Error.ServiceUnknown'
