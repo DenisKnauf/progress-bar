@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/DenisKnauf/progress-bar"
   gem.license = "MIT"
   gem.summary = %Q{Progress Bar for terminal and KDE}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.description = %Q{Displays a Progress Bar in terminal or via kdialog}
   gem.email = %q{#{"de"}nis}+?@+'den'+%Q{kn}+"#{?.}at"
   gem.authors = ["Denis Knauf"]
   # dependencies defined in Gemfile
