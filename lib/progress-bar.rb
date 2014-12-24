@@ -17,6 +17,7 @@ class ProgressBar::Base
 	attr_accessor :start
 	def initialize max = nil, text = nil
 		@start, @max, @i, @text, @error = Time.now, max || 100, 0, text || '', nil
+		at_exit {finish}
 	end
 
 	def i= x
@@ -90,12 +91,13 @@ end
 
 class ProgressBar::KDialog < ProgressBar::Base
 	attr_reader :dialog_service_path, :dialog_object_path, :errors, :dialog_object
-	def initialize max, text = nil
+	def initialize max, text = nil, title = nil
 		super max, text
 		text = @text
 		text = nil  if text.nil? or text.empty?
+		title = nil  if title.nil? or title.empty?
 		@errors = []
-		args = %w[kdialog --progressbar] + [text || '.', max.to_s]
+		args = ['kdialog', *(title ? ['--title', title] : []), '--progressbar', text || '.', max.to_s]
 		@dialog_service_path, @dialog_object_path = IO.popen( args, 'r', &:readlines).join("\n").split ' '
 		@dialog_bus = DBus.session_bus
 		@dialog_service = @dialog_bus[@dialog_service_path]
