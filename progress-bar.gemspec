@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "progress-bar"
-  s.version = "0.3.6"
+  s.version = "0.3.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Denis Knauf"]
-  s.date = "2014-12-23"
+  s.date = "2014-12-24"
   s.description = "Displays a Progress Bar in terminal or via kdialog"
   s.email = "\#{\"de\"}nis@denkn.at"
   s.extra_rdoc_files = [
